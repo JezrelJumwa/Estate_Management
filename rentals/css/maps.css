@@ -1,0 +1,52 @@
+svg {
+  position: relative;
+}
+
+paths{
+  fill: #fff;
+  fill-opacity: 1;
+  stroke: #fff;
+  stroke-width: 1px;
+}
+
+paths:hover {
+  fill: brown;
+  fill-opacity: .6;
+  cursor:point;
+}
+
+.tooltip2 {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  font-weight: bold;
+  padding: 4px 8px;
+  display: none;
+}
+
+.tooltip3{
+    color:#009900 !important;	
+}
+
+.toolTip3{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    position: absolute;
+    display: none;
+    width: auto;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: 0 none;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 12px sans-serif;
+    padding: 5px;
+    text-align: left;
+}
+
+.legend2{
+	font-weight:800;
+	background:url(../images/red.png) center left no-repeat;
+	
+}
