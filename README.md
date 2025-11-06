@@ -416,7 +416,7 @@ This project is open-sourced software licensed under the [MIT license](https://o
 
 ## Support
 
-For support, email jumwa@outlook.com or create an issue in the repository.
+For support, email jumwa22@gmail.com or create an issue in the repository.
 
 ---
 
