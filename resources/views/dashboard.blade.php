@@ -130,9 +130,11 @@
                                 <p class="text-gray-500">No users available yet.</p>
                             @endforelse
                         </div>
-                        <div class="mt-4">
-                            <a href="{{ route('users.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold">View All Users →</a>
-                        </div>
+                        @if(auth()->user()->isAdmin())
+                            <div class="mt-4">
+                                <a href="{{ route('users.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold">View All Users →</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

@@ -15,6 +15,28 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if (Auth::user()->isAdmin())
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('Users') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->isAdmin() || Auth::user()->isLandlord() || Auth::user()->isTenant())
+                        <x-nav-link :href="route('houses.index')" :active="request()->routeIs('houses.*')">
+                            {{ __('Houses') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->isAdmin() || Auth::user()->isLandlord())
+                        <x-nav-link :href="route('estates.index')" :active="request()->routeIs('estates.*')">
+                            {{ __('Estates') }}
+                        </x-nav-link>
+                    @endif
+
+                    <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
+                        {{ __('Bookings') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -69,6 +91,28 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+
+            @if (Auth::user()->isAdmin())
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user()->isAdmin() || Auth::user()->isLandlord() || Auth::user()->isTenant())
+                <x-responsive-nav-link :href="route('houses.index')" :active="request()->routeIs('houses.*')">
+                    {{ __('Houses') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user()->isAdmin() || Auth::user()->isLandlord())
+                <x-responsive-nav-link :href="route('estates.index')" :active="request()->routeIs('estates.*')">
+                    {{ __('Estates') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
+                {{ __('Bookings') }}
             </x-responsive-nav-link>
         </div>
 
