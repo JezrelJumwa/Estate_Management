@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'payment' => [
+        'provider' => env('PAYMENT_PROVIDER', 'SIMULATED'),
+        'api_key' => env('PAYMENT_API_KEY'),
+        'secret' => env('PAYMENT_API_SECRET'),
+    ],
+
 ];

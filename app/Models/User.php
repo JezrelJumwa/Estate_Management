@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'api_token',
         'id_number',
         'first_name',
         'last_name',
@@ -40,6 +41,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
     ];
 
     /**
@@ -85,6 +87,30 @@ class User extends Authenticatable
     public function houses(): HasMany
     {
         return $this->hasMany(House::class, 'landlord_id');
+    }
+
+    /**
+     * Get payment records for this user.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Get maintenance requests for this user.
+     */
+    public function maintenanceRequests(): HasMany
+    {
+        return $this->hasMany(MaintenanceRequest::class);
+    }
+
+    /**
+     * Get uploaded documents for this user.
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class);
     }
 
     /**
