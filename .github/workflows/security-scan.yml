@@ -30,10 +30,16 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          extensions: mbstring, sqlite3, pdo_sqlite
           coverage: none
 
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
 
       - name: Create SQLite database file for tests
         run: touch database/database.sqlite
