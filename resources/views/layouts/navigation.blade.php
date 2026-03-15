@@ -37,6 +37,30 @@
                     <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
                         {{ __('Bookings') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
+                        {{ __('messages.payments') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('maintenance-requests.index')" :active="request()->routeIs('maintenance-requests.*')">
+                        {{ __('messages.maintenance_requests') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('documents.index')" :active="request()->routeIs('documents.*')">
+                        {{ __('messages.documents') }}
+                    </x-nav-link>
+
+                    @if (Auth::user()->isTenant())
+                        <x-nav-link :href="route('tenant.portal')" :active="request()->routeIs('tenant.portal')">
+                            {{ __('messages.tenant_portal') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->isAdmin() || Auth::user()->isLandlord())
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                            {{ __('messages.reports') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -114,6 +138,30 @@
             <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
                 {{ __('Bookings') }}
             </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
+                        {{ __('messages.payments') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('maintenance-requests.index')" :active="request()->routeIs('maintenance-requests.*')">
+                        {{ __('messages.maintenance_requests') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('documents.index')" :active="request()->routeIs('documents.*')">
+                        {{ __('messages.documents') }}
+                    </x-responsive-nav-link>
+
+                    @if (Auth::user()->isTenant())
+                        <x-responsive-nav-link :href="route('tenant.portal')" :active="request()->routeIs('tenant.portal')">
+                            {{ __('messages.tenant_portal') }}
+                        </x-responsive-nav-link>
+                    @endif
+
+                    @if (Auth::user()->isAdmin() || Auth::user()->isLandlord())
+                        <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                            {{ __('messages.reports') }}
+                        </x-responsive-nav-link>
+                    @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -124,6 +172,12 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <div class="px-4 py-1 text-xs text-gray-500">{{ __('messages.language') }}</div>
+                <div class="px-4 flex gap-2 pb-2">
+                    <a href="{{ route('locale.switch', 'en') }}" class="text-xs text-indigo-600 hover:text-indigo-800">EN</a>
+                    <a href="{{ route('locale.switch', 'sw') }}" class="text-xs text-indigo-600 hover:text-indigo-800">SW</a>
+                </div>
+
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>

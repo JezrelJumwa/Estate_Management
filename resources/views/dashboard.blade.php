@@ -78,6 +78,22 @@
                 </div>
             </div>
 
+            <!-- Advanced Analytics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <p class="text-sm text-gray-500">Total Revenue</p>
+                    <p class="text-2xl font-semibold text-emerald-700">Ksh {{ number_format($totalRevenue, 2) }}</p>
+                </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <p class="text-sm text-gray-500">Revenue This Month</p>
+                    <p class="text-2xl font-semibold text-indigo-700">Ksh {{ number_format($monthlyRevenue, 2) }}</p>
+                </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <p class="text-sm text-gray-500">Pending Maintenance</p>
+                    <p class="text-2xl font-semibold text-amber-700">{{ $pendingMaintenance }}</p>
+                </div>
+            </div>
+
             <!-- Recent Houses -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -162,6 +178,29 @@
                         <div class="mt-4">
                             <a href="{{ route('bookings.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold">View All Bookings →</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Payments -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Payments</h3>
+                    <div class="space-y-3">
+                        @forelse($recentPayments as $payment)
+                            <div class="flex items-center justify-between border rounded-md p-3">
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ $payment->user?->full_name ?? 'Unknown User' }}</p>
+                                    <p class="text-sm text-gray-600">{{ $payment->transaction_reference }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-gray-900">Ksh {{ number_format((float) $payment->amount, 2) }}</p>
+                                    <p class="text-xs {{ $payment->status === 'PAID' ? 'text-green-700' : 'text-red-700' }}">{{ $payment->status }}</p>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-gray-500">No payments recorded yet.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
