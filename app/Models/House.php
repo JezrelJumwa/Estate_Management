@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +13,7 @@ class House extends Model
     use HasFactory;
 
     protected $fillable = [
+        'landlord_id',
         'house_number',
         'rent',
         'house_type',
@@ -23,6 +25,14 @@ class House extends Model
     protected $casts = [
         'rent' => 'decimal:2',
     ];
+
+    /**
+     * Get the landlord who owns this house.
+     */
+    public function landlord(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'landlord_id');
+    }
 
     /**
      * Get all estates associated with this house
