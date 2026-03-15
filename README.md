@@ -1,6 +1,31 @@
-# Estate Management System (Laravel)
+# Estate Management System (Laravel 12)
 
-A modern, secure Estate Management System built with Laravel 12, providing comprehensive property and tenant management capabilities.
+A modern, secure Estate Management System built with Laravel 12 for property, estate, tenant, and booking management.
+
+## Implementation Status (March 2026)
+
+### Completed Features
+
+- Authentication (login, register, logout, profile)
+- Role-based access control (Administrator, Landlord, Tenant)
+- Full CRUD for Users (admin only)
+- Full CRUD for Houses
+- Full CRUD for Estates
+- Full CRUD for Bookings
+- Landlord ownership enforcement:
+   - Landlords only manage their own houses/estates
+   - Landlords only view/edit bookings for their own houses
+- Tenant experience:
+   - Tenants can browse available houses
+   - Tenants can create and manage their own bookings
+- House image upload and storage via `storage/app/public`
+- Dashboard metrics and recent activity panels
+
+### In Progress / Recommended Next
+
+- Convert `system_rights` to fully enforced, fine-grained permissions across all route actions
+- Add audit logging for sensitive actions (user updates/deletions, booking status changes)
+- Add dedicated Feature tests for ownership and authorization scenarios
 
 ## Overview
 
@@ -29,7 +54,7 @@ This is a complete rewrite of the legacy PHP Estate Management system, now using
 ### 1. Clone the Repository
 
 ```bash
-cd /Users/jezreljumwa/IdeaProjects/Personal/Estate_Management_Laravel
+cd /Users/jezreljumwa/IdeaProjects/Personal/Estate_Management
 ```
 
 ### 2. Install Dependencies
@@ -75,6 +100,14 @@ php artisan key:generate
 ```bash
 php artisan migrate
 ```
+
+If you are upgrading from an earlier version of this repository, run this new migration too:
+
+```bash
+php artisan migrate
+```
+
+This includes the landlord ownership column on houses.
 
 This will create all necessary tables and seed initial data including:
 - User statuses (ACTIVE, INACTIVE)
@@ -126,6 +159,7 @@ Visit `http://localhost:8000` in your browser.
 
 ### Houses Table
 - **id**: Primary key
+- **landlord_id**: Owner user ID (landlord)
 - **house_number**: Property number
 - **rent**: Monthly rent amount
 - **house_type**: Type of property (e.g., Bungalow, Apartment)
@@ -180,15 +214,15 @@ User::create([
 - System configuration
 
 ### Landlord
-- Manage their own properties
-- Add/edit/delete houses
-- View bookings for their properties
-- Limited user management (tenants only)
+- Manage only their own properties
+- Add/edit/delete only their own houses
+- Create/edit estates only for their own houses
+- View bookings for their own houses
 
 ### Tenant
-- View available properties
+- View available properties only
 - Book houses
-- View their own bookings
+- View and manage their own bookings
 - Update profile
 
 ## Key Laravel Features Used
@@ -263,6 +297,23 @@ Routes are defined in `routes/web.php`:
 - **Houses**: `/houses` (CRUD operations)
 - **Estates**: `/estates` (CRUD operations)
 - **Bookings**: `/bookings` (CRUD operations)
+
+## What Else Should Be Added Next
+
+1. Authorization Policies:
+Define Laravel Policies for `House`, `Estate`, and `HouseBooking` to centralize ownership checks.
+
+2. Fine-grained Rights Integration:
+Use `system_rights` as active route/action permissions (not only role groups).
+
+3. Business Constraints:
+Prevent double-active bookings for the same house with DB-level constraints and transactional checks.
+
+4. Test Coverage:
+Add tests for landlord ownership boundaries and tenant data isolation.
+
+5. Operational Hardening:
+Add audit logs and optional soft deletes for critical records.
 
 ## Deployment
 
@@ -354,7 +405,7 @@ sudo chown -R www-data:www-data storage bootstrap/cache
 composer dump-autoload
 ```
 
-**Mix Manifest Not Found**
+**Vite Manifest Not Found**
 ```bash
 npm run dev
 ```
@@ -416,7 +467,7 @@ This project is open-sourced software licensed under the [MIT license](https://o
 
 ## Support
 
-For support, email jumwa@outlook.com or create an issue in the repository.
+For support, email jumwa22@gmail.com or create an issue in the repository.
 
 ---
 

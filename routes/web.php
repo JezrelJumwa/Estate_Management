@@ -22,17 +22,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // User management routes
-    Route::resource('users', UserController::class);
+    Route::middleware('role:ADMINISTRATOR')->group(function () {
+        // User management routes
+        Route::resource('users', UserController::class);
+    });
 
-    // House management routes
-    Route::resource('houses', HouseController::class);
+    Route::middleware('role:ADMINISTRATOR,LANDLORD,TENANT')->group(function () {
+        // House browsing routes
+        Route::resource('houses', HouseController::class)->only(['index', 'show']);
+    });
 
-    // Estate management routes
-    Route::resource('estates', EstateController::class);
+    Route::middleware('role:ADMINISTRATOR,LANDLORD')->group(function () {
+        // House and estate management routes
+        Route::resource('houses', HouseController::class)->except(['index', 'show']);
+        Route::resource('estates', EstateController::class);
+    });
 
     // Booking management routes
-    Route::resource('bookings', HouseBookingController::class);
+    Route::resource('bookings', HouseBookingController::class)
+        ->middleware('role:ADMINISTRATOR,LANDLORD,TENANT');
 });
 
 require __DIR__.'/auth.php';
