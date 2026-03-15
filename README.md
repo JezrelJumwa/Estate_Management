@@ -20,12 +20,23 @@ A modern, secure Estate Management System built with Laravel 12 for property, es
    - Tenants can create and manage their own bookings
 - House image upload and storage via `storage/app/public`
 - Dashboard metrics and recent activity panels
+- REST API (token-based) for mobile/backend integration
+- Payments module with online gateway service abstraction (sandbox/simulated)
+- Automated rent reminders (scheduled command + notifications)
+- Maintenance request tracking
+- Document management and downloads
+- Tenant portal view and tenant-centered actions
+- Reporting dashboard with CSV export for payments
+- Multi-language support (English/Swahili locale switch)
+- SMS integration abstraction with delivery logging
 
 ### In Progress / Recommended Next
 
 - Convert `system_rights` to fully enforced, fine-grained permissions across all route actions
 - Add audit logging for sensitive actions (user updates/deletions, booking status changes)
 - Add dedicated Feature tests for ownership and authorization scenarios
+- Replace sandbox payment gateway service with real provider credentials/webhooks
+- Replace SMS logger with real provider delivery (e.g., Twilio/AfricasTalking)
 
 ## Overview
 
@@ -39,6 +50,13 @@ This is a complete rewrite of the legacy PHP Estate Management system, now using
 - **Booking System**: Track house availability and tenant bookings
 - **Role-Based Access Control**: Different permissions for Administrators, Landlords, and Tenants
 - **Secure Authentication**: Laravel's built-in authentication with password hashing
+- **REST API**: Token-authenticated endpoints for login, houses, bookings, and payments
+- **Payments**: Record and track rent payments via a gateway service layer
+- **Notifications & Reminders**: Automated rent reminders using Laravel scheduler and notifications
+- **Maintenance Requests**: Capture and manage property maintenance issues
+- **Document Management**: Upload metadata and download managed tenant/property documents
+- **Reporting**: Revenue and payment reporting with CSV export
+- **Internationalization**: Runtime locale switching (English and Swahili)
 - **Modern UI**: Responsive interface using Blade templates
 
 ## Requirements
@@ -142,6 +160,20 @@ php artisan serve
 ```
 
 Visit `http://localhost:8000` in your browser.
+
+### 9. Run Scheduler (for rent reminders)
+
+Run Laravel's scheduler in development so automated reminders execute:
+
+```bash
+php artisan schedule:work
+```
+
+In production, configure cron:
+
+```bash
+* * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
+```
 
 ## Database Schema
 
@@ -279,6 +311,20 @@ User::create([
 php artisan test
 ```
 
+### Security Scanning
+
+Run the PHP dependency vulnerability audit locally:
+
+```bash
+composer run security:scan
+```
+
+GitHub CI security scanning is configured in `.github/workflows/security-scan.yml` and includes:
+- Composer dependency audit
+- NPM dependency audit
+- Semgrep static security analysis with SARIF upload
+- Gitleaks secret scanning
+
 ### Code Style
 
 This project follows PSR-12 coding standards. Run PHP CS Fixer:
@@ -287,16 +333,25 @@ This project follows PSR-12 coding standards. Run PHP CS Fixer:
 ./vendor/bin/pint
 ```
 
-## API Endpoints (Future Enhancement)
+## API Endpoints
 
-Routes are defined in `routes/web.php`:
+Routes are defined in `routes/api.php`:
 
-- **Auth**: `/login`, `/register`, `/logout`
-- **Dashboard**: `/dashboard`
-- **Users**: `/users` (CRUD operations)
-- **Houses**: `/houses` (CRUD operations)
-- **Estates**: `/estates` (CRUD operations)
-- **Bookings**: `/bookings` (CRUD operations)
+- `POST /api/auth/login` (returns API token)
+- `GET /api/houses`
+- `GET /api/houses/{house}`
+- `GET /api/bookings` (requires `Authorization: Bearer <token>`)
+- `POST /api/bookings` (requires `Authorization: Bearer <token>`)
+- `POST /api/payments` (requires `Authorization: Bearer <token>`)
+
+Sample login request:
+
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+   -H "Accept: application/json" \
+   -H "Content-Type: application/json" \
+   -d '{"email":"tenant@example.com","password":"password"}'
+```
 
 ## What Else Should Be Added Next
 
@@ -310,10 +365,10 @@ Use `system_rights` as active route/action permissions (not only role groups).
 Prevent double-active bookings for the same house with DB-level constraints and transactional checks.
 
 4. Test Coverage:
-Add tests for landlord ownership boundaries and tenant data isolation.
+Add tests for API token auth, payments, maintenance workflows, and tenant portal flows.
 
 5. Operational Hardening:
-Add audit logs and optional soft deletes for critical records.
+Add audit logs, webhook verification for payment callbacks, and optional soft deletes for critical records.
 
 ## Deployment
 
@@ -450,20 +505,20 @@ This project is open-sourced software licensed under the [MIT license](https://o
 - Simple authentication
 - File uploads
 
-## Future Enhancements
+## Feature Checklist
 
-- [ ] REST API for mobile app integration
-- [ ] Payment processing integration
-- [ ] Automated rent reminders
-- [ ] Maintenance request system
-- [ ] Document management
-- [ ] Analytics dashboard
-- [ ] Email notifications
-- [ ] SMS integration
-- [ ] Multi-language support
-- [ ] Advanced reporting
-- [ ] Tenant portal
-- [ ] Online payment gateway
+- [x] REST API for mobile app integration
+- [x] Payment processing module
+- [x] Automated rent reminders
+- [x] Maintenance request system
+- [x] Document management
+- [x] Analytics dashboard
+- [x] Email notifications
+- [x] SMS integration abstraction
+- [x] Multi-language support
+- [x] Advanced reporting
+- [x] Tenant portal
+- [x] Online payment gateway abstraction
 
 ## Support
 
