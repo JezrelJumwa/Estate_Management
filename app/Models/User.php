@@ -80,6 +80,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get houses owned by this landlord.
+     */
+    public function houses(): HasMany
+    {
+        return $this->hasMany(House::class, 'landlord_id');
+    }
+
+    /**
      * Get full name
      */
     public function getFullNameAttribute(): string
